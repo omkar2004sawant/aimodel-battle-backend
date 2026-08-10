@@ -1,139 +1,315 @@
-# AI Model Battle
+# ⚔️ AI Model Battle
 
-A production-ready MERN stack application where two AI models compete on the same prompt and a third AI judge declares the winner.
+A full-stack MERN application where two AI models compete on the same prompt and an AI judge decides the winner based on accuracy, completeness, clarity, and creativity.
 
-## Features
+---
 
-- **Authentication** — JWT + bcrypt signup/login with protected routes
-- **Dashboard** — total battles, win rate, most accurate AI, total tokens used, recent battles
-- **AI Battle** — pick two models, enter a prompt, both generate answers side-by-side, a judge model scores them on accuracy, completeness, clarity, and creativity
-- **File Upload** — upload a PDF or image; both models analyze the content before judging
-- **Battle History** — every battle saved to MongoDB, searchable, deletable, exportable as TXT
-- **Settings** — edit profile, change password, sign out
-- **UI** — dark/light mode, glassmorphism, Framer Motion animations, skeleton loaders, copy buttons, winner/loser badges, fully responsive
+# 🌐 Live Demo
 
-## Tech Stack
+**Frontend**
 
-| Layer | Technology |
-|------|------------|
-| Frontend | React 18, Vite, Tailwind CSS, Framer Motion, Lucide React, React Router, Sonner, Axios |
-| Backend | Node.js, Express.js |
-| Database | MongoDB (Mongoose) |
-| Auth | JWT, bcryptjs |
-| AI | OpenAI API (with built-in demo fallback) |
+https://aimodel-battle-backend.vercel.app
 
-## Project Structure
+**Backend**
 
-```
-AI-Model-Battle/
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── layouts/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── styles/
-│   │   ├── utils/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── .env
-│   ├── package.json
-│   └── vite.config.js
-├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
-│   ├── utils/
-│   ├── uploads/
-│   ├── .env
-│   ├── package.json
+https://aimodel-battle-backend.onrender.com
+
+---
+
+# 📸 Preview
+
+### 🏠 Home
+
+![Home](screenshots/home.png)
+
+### 📊 Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+### ⚔️ AI Battle
+
+![AI Battle](screenshots/battle.png)
+
+### 📜 Battle History
+
+![Battle History](screenshots/history.png)
+
+---
+
+# ✨ Features
+
+## ⚔️ AI Model Battle
+
+- Select two different AI models
+- Send the same prompt to both models
+- Generate responses side-by-side
+- Compare model responses
+- Track response latency
+- Track token usage
+- Automatically determine the winner
+
+---
+
+## ⚖️ AI Judge
+
+- Third AI model evaluates both responses
+- Accuracy scoring
+- Completeness scoring
+- Clarity scoring
+- Creativity scoring
+- Scores each criterion from 0–10
+- Declares Model A, Model B, or Tie
+- Provides an explanation for the final verdict
+
+---
+
+## 🤖 Multiple AI Models
+
+- GPT-OSS 120B
+- GPT-OSS 20B
+- NVIDIA Nemotron
+- Google Gemma
+- Models accessed through OpenRouter
+- Easy to add additional models
+
+---
+
+## 📄 File Analysis
+
+- Upload PDF files
+- Upload images
+- Extract text from PDFs
+- Provide uploaded content as context to AI models
+- File type validation
+- File size validation
+
+---
+
+## 📊 Dashboard
+
+- Total battles
+- Overall win rate
+- Most accurate AI model
+- Total tokens used
+- Recent battles
+- Battle statistics
+
+---
+
+## 📜 Battle History
+
+- Save every completed battle
+- Search battle history
+- View previous battles
+- Delete individual battles
+- Clear battle history
+- Export battle results as TXT
+
+---
+
+## 👤 Authentication
+
+- User Signup
+- User Login
+- JWT Authentication
+- Password hashing with bcrypt
+- Protected routes
+- Profile management
+- Change password
+- Secure logout
+
+---
+
+## 🎨 UI & Experience
+
+- Modern AI battle interface
+- Dark / Light mode
+- Responsive design
+- Framer Motion animations
+- Loading states
+- Animated score bars
+- Winner / Loser badges
+- Copy response functionality
+- Toast notifications
+- Mobile responsive layout
+
+---
+
+# 🚀 Tech Stack
+
+## Frontend
+
+- React
+- JavaScript
+- Vite
+- Tailwind CSS
+- Framer Motion
+- React Router
+- Axios
+- Lucide React
+- Sonner
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+- bcryptjs
+- Multer
+
+## AI
+
+- OpenRouter
+- OpenAI-compatible SDK
+- GPT-OSS
+- NVIDIA Nemotron
+- Google Gemma
+
+## Deployment
+
+- Vercel — Frontend
+- Render — Backend
+- MongoDB Atlas — Database
+
+---
+
+# 📂 Project Structure
+
+```text
+AI-Model-Battle
+│
+├── backend
+│   ├── config
+│   ├── controllers
+│   ├── middleware
+│   ├── models
+│   ├── routes
+│   ├── services
+│   ├── utils
+│   ├── uploads
 │   └── server.js
-├── README.md
-└── .gitignore
+│
+├── frontend
+│   ├── public
+│   ├── src
+│   │   ├── components
+│   │   ├── context
+│   │   ├── layouts
+│   │   ├── pages
+│   │   ├── services
+│   │   ├── styles
+│   │   └── utils
+│   └── vite.config.js
+│
+├── .gitignore
+└── README.md
+```
+---
+# 🛠️ Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/omkar2004sawant/AI-Model-Battle.git
+cd AI-Model-Battle
 ```
 
-## Setup
-
-### Prerequisites
-
-- Node.js 18+
-- MongoDB (local install or a free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster)
-
-### 1. Backend
+Install Backend
 
 ```bash
 cd backend
 npm install
 ```
 
-Edit `backend/.env`:
+Create `backend/.env`
 
+```env
+PORT=3000
+MONGO_URI=YOUR_MONGODB_URI
+JWT_SECRET=YOUR_JWT_SECRET
+OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY
+CLIENT_URL=http://localhost:5173
 ```
-MONGO_URI=mongodb://127.0.0.1:27017/ai_model_battle
-JWT_SECRET=change_this_to_a_long_random_secret_string
-OPENAI_API_KEY=sk-your-key-here
-```
 
-> If you don't have an OpenAI key yet, leave the placeholder — the app runs in **demo mode** with simulated responses so you can explore the full UI immediately. Add a real key later to get genuine model answers.
-
-Start the backend:
+Install Frontend
 
 ```bash
-npm run dev
-```
-
-Server runs on `http://localhost:5000`.
-
-### 2. Frontend
-
-```bash
-cd frontend
+cd ../frontend
 npm install
 ```
 
-`frontend/.env` is preconfigured to point at the local backend:
+Create `frontend/.env`
 
-```
-VITE_API_URL=http://localhost:5000/api
+```env
+VITE_API_URL=http://localhost:3000/api
 ```
 
-Start the frontend:
+---
+
+# ▶️ Run Locally
+
+### Backend
 
 ```bash
+cd backend
 npm run dev
 ```
 
-App runs on `http://localhost:5173`.
+### Frontend
 
-## API Endpoints
+```bash
+cd frontend
+npm run dev
+```
 
-| Method | Route | Auth | Description |
-|--------|-------|------|-------------|
-| POST | `/api/auth/signup` | — | Create account, returns JWT |
-| POST | `/api/auth/login` | — | Login, returns JWT |
-| GET | `/api/auth/me` | ✓ | Current user |
-| POST | `/api/battles` | ✓ | Run a battle (multipart: prompt + optional file) |
-| GET | `/api/battles/stats` | ✓ | Dashboard stats |
-| GET | `/api/history` | ✓ | List battles (`?q=` to search) |
-| GET | `/api/history/:id` | ✓ | Single battle |
-| DELETE | `/api/history/:id` | ✓ | Delete one battle |
-| DELETE | `/api/history` | ✓ | Clear all history |
-| PUT | `/api/users/profile` | ✓ | Update name |
-| PUT | `/api/users/password` | ✓ | Change password |
+---
 
-## How the AI battle works
+# 🌍 Deployment
 
-1. You enter a prompt and optionally upload a PDF or image.
-2. The backend sends the prompt to **Model A** and **Model B** in parallel via the OpenAI API.
-3. Both responses come back with latency and token counts.
-4. The **Judge model** receives both responses plus the original prompt and returns structured JSON: per-criterion scores (0–10), a winner (`A`, `B`, or `tie`), and a written explanation.
-5. The battle (prompt, both responses, scores, verdict, tokens) is saved to MongoDB.
-6. The frontend renders the side-by-side arena, animated score bars, winner badges, and the judge's explanation.
+### Frontend
 
-## License
+**Vercel**
 
-MIT — use it, fork it, put it in your portfolio.
+https://aimodel-battle-backend.vercel.app
+
+### Backend
+
+**Render**
+
+https://aimodel-battle-backend.onrender.com
+
+---
+
+# 🎯 Highlights
+
+- ⚔️ Head-to-Head AI Model Comparison
+- ⚖️ AI-Powered Judging System
+- 🤖 Multiple AI Models
+- 📊 Battle Analytics
+- 📜 Persistent Battle History
+- 📄 PDF & Image Analysis
+- 🔐 JWT Authentication
+- 🌙 Dark / Light Mode
+- ⚡ REST API Architecture
+- 🗄️ MongoDB Database
+- 🚀 Full Stack MERN Application
+
+---
+
+# 👨‍💻 Author
+
+### Omkar Sawant
+
+**GitHub**
+
+https://github.com/omkar2004sawant
+
+**LinkedIn**
+
+https://linkedin.com/in/osomkarsawant
+
+---
+
+⭐ **If you like this project, don't forget to star the repository!**
