@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root { color-scheme: light dark; }
+  html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body { @apply bg-ink-50 text-ink-900 antialiased; }
+  .dark body { @apply bg-ink-950 text-ink-100; }
+  ::selection { @apply bg-accent-400/30 text-ink-900; }
+  .dark ::selection { @apply bg-accent-400/30 text-ink-100; }
+}
+
+@layer components {
+  .glass { @apply bg-white/70 backdrop-blur-xl border border-ink-200/60; }
+  .dark .glass { @apply bg-ink-900/60 border-white/10; }
+  .card { @apply rounded-2xl glass shadow-card; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60; }
+  .btn-primary { @apply btn bg-ink-900 text-white hover:bg-ink-800 active:scale-[0.98]; }
+  .dark .btn-primary { @apply bg-accent-500 text-ink-950 hover:bg-accent-400; }
+  .btn-ghost { @apply btn text-ink-600 hover:bg-ink-100; }
+  .dark .btn-ghost { @apply text-ink-300 hover:bg-white/5; }
+  .btn-outline { @apply btn border border-ink-200 text-ink-700 hover:bg-ink-100; }
+  .dark .btn-outline { @apply border-white/10 text-ink-200 hover:bg-white/5; }
+  .input { @apply w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm text-ink-900 placeholder-ink-400 transition focus:outline-none focus:ring-2 focus:ring-accent-400/50 focus:border-accent-400; }
+  .dark .input { @apply border-white/10 bg-ink-900/60 text-ink-100 placeholder-ink-500; }
+  .label { @apply mb-1.5 block text-xs font-medium uppercase tracking-wide text-ink-500; }
+  .badge { @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold; }
+  .skeleton { @apply relative overflow-hidden bg-ink-100 rounded-md; }
+  .dark .skeleton { @apply bg-white/5; }
+  .skeleton::after { @apply absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent; content: ''; }
+  .dark .skeleton::after { @apply via-white/10; }
+}
+
+@layer utilities {
+  .scrollbar-thin { scrollbar-width: thin; }
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { @apply bg-ink-300 rounded-full; }
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb { @apply bg-white/10; }
+}
