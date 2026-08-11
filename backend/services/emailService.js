@@ -1,49 +1,68 @@
-import nodemailer from 'nodemailer';
-
-let transporter = null;
-
-function getTransporter() {
-  if (transporter) return transporter;
-
-  const { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS, EMAIL_FROM } = process.env;
-
-  if (EMAIL_HOST && EMAIL_PORT && EMAIL_USER && EMAIL_PASS) {
-    transporter = nodemailer.createTransport({
-      host: EMAIL_HOST,
-      port: Number(EMAIL_PORT),
-      secure: Number(EMAIL_PORT) === 465,
-      auth: { user: EMAIL_USER, pass: EMAIL_PASS },
-    });
-    return { transporter, mode: 'smtp', from: EMAIL_FROM || EMAIL_USER };
-  }
-
-  return { transporter: null, mode: 'console', from: EMAIL_FROM || 'no-reply@aimodelbattle.local' };
-}
+import { google } from "googleapis";
 
 export async function sendVerificationEmail({ to, verificationUrl }) {
-  const { transporter, mode, from } = getTransporter();
+  const {
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_REFRESH_TOKEN,
+    EMAIL_FROM,
+  } = process.env;
 
-  const subject = 'Verify your email — AI Model Battle';
-  const text = `Welcome to AI Model Battle!\n\nPlease verify your email by clicking the link below:\n\n${verificationUrl}\n\nThis link expires in 30 minutes.\n\nIf you did not create an account, you can safely ignore this email.`;
+  const oauth2Client = new google.auth.OAuth2(
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET
+  );
+
+  oauth2Client.setCredentials({
+    refresh_token: GOOGLE_REFRESH_TOKEN,
+  });
+
+  const gmail = google.gmail({
+    version: "v1",
+    auth: oauth2Client,
+  });
+
+  const subject = "Verify your email — AI Model Battle";
+
   const html = `
-    <div style="font-family: Inter, Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px;">
-      <h2 style="color: #0b0e14;">Welcome to AI Model Battle</h2>
-      <p style="color: #525c72; line-height: 1.6;">Please verify your email address to activate your account.</p>
-      <a href="${verificationUrl}" style="display: inline-block; margin: 16px 0; padding: 12px 24px; background-color: #06b6d4; color: #06080c; text-decoration: none; border-radius: 8px; font-weight: 600;">Verify Email</a>
-      <p style="color: #8590a8; font-size: 13px; line-height: 1.5;">This link expires in 30 minutes. If you did not create an account, you can safely ignore this email.</p>
-    </div>`;
+    <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px;">
+      <h2>Welcome to AI Model Battle</h2>
 
-  if (mode === 'smtp' && transporter) {
-    await transporter.sendMail({ from, to, subject, text, html });
-    return { mode: 'smtp' };
-  }
+      <p>Please verify your email address to activate your account.</p>
 
-  console.log('\n────────────────────────────────────────');
-  console.log('  EMAIL VERIFICATION (console fallback)');
-  console.log('────────────────────────────────────────');
-  console.log(`  To:  ${to}`);
-  console.log(`  Subject: ${subject}`);
-  console.log(`  Verification URL: ${verificationUrl}`);
-  console.log('────────────────────────────────────────\n');
-  return { mode: 'console' };
+      <a href="${verificationUrl}"
+         style="display:inline-block;padding:12px 24px;background:#06b6d4;color:#06080c;text-decoration:none;border-radius:8px;font-weight:600;">
+        Verify Email
+      </a>
+
+      <p style="font-size:13px;">
+        This link expires in 30 minutes.
+      </p>
+    </div>
+  `;
+
+  const message = [
+    `From: AI Model Battle <${EMAIL_FROM}>`,
+    `To: ${to}`,
+    `Subject: ${subject}`,
+    "MIME-Version: 1.0",
+    "Content-Type: text/html; charset=UTF-8",
+    "",
+    html,
+  ].join("\r\n");
+
+  const encodedMessage = Buffer.from(message)
+    .toString("base64url");
+
+  const response = await gmail.users.messages.send({
+    userId: "me",
+    requestBody: {
+      raw: encodedMessage,
+    },
+  });
+
+  return {
+    mode: "gmail-api",
+    id: response.data.id,
+  };
 }
