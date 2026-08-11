@@ -79,9 +79,7 @@ https://aimodel-battle-backend.onrender.com
 - Upload PDF files
 - Upload images
 - Extract text from PDFs
-- Provide uploaded content as context to AI models
-- File type validation
-- File size validation
+
 
 ---
 
@@ -102,7 +100,6 @@ https://aimodel-battle-backend.onrender.com
 - Search battle history
 - View previous battles
 - Delete individual battles
-- Clear battle history
 - Export battle results as TXT
 
 ---
@@ -111,8 +108,6 @@ https://aimodel-battle-backend.onrender.com
 
 - User Signup
 - User Login
-- JWT Authentication
-- Password hashing with bcrypt
 - Protected routes
 - Profile management
 - Change password
