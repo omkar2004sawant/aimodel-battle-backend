@@ -285,7 +285,6 @@ https://aimodel-battle-backend.onrender.com
 - 📊 Battle Analytics
 - 📜 Persistent Battle History
 - 📄 PDF & Image Analysis
-- 🔐 JWT Authentication
 - 🌙 Dark / Light Mode
 - ⚡ REST API Architecture
 - 🗄️ MongoDB Database
