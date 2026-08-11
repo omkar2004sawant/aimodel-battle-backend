@@ -6,6 +6,10 @@ export const authService = {
   login: (email, password) =>
     api.post('/auth/login', { email, password }).then((r) => r.data),
   me: () => api.get('/auth/me').then((r) => r.data),
+  verifyEmail: (token) =>
+    api.get('/auth/verify-email', { params: { token } }).then((r) => r.data),
+  resendVerification: (email) =>
+    api.post('/auth/resend-verification', { email }).then((r) => r.data),
 };
 
 export const battleService = {

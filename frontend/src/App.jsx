@@ -8,6 +8,7 @@ import { AppLayout } from '@/layouts/AppLayout';
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import SignupPage from '@/pages/SignupPage';
+import VerifyEmailPage from '@/pages/VerifyEmailPage';
 import DashboardPage from '@/pages/DashboardPage';
 import BattlePage from '@/pages/BattlePage';
 import HistoryPage from '@/pages/HistoryPage';
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/landing" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
             <Route path="/dashboard" element={<ProtectedRoute><AppLayout><DashboardPage /></AppLayout></ProtectedRoute>} />
             <Route path="/battle" element={<ProtectedRoute><AppLayout><BattlePage /></AppLayout></ProtectedRoute>} />
             <Route path="/history" element={<ProtectedRoute><AppLayout><HistoryPage /></AppLayout></ProtectedRoute>} />

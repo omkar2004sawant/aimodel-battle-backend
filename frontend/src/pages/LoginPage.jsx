@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Swords, ArrowRight, Mail, Lock } from 'lucide-react';
-import { toast } from 'sonner';
+import { Swords, ArrowRight, Mail, Lock, MailWarning, Loader2 } from 'lucide-react';
 import { authService } from '@/services/endpoints';
 import { useAuth } from '@/context/AuthContext';
 import { Spinner } from '@/components/Feedback';
@@ -16,10 +15,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [unverified, setUnverified] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [resendDone, setResendDone] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
     setError(null);
+    setUnverified(false);
+    setResendDone(false);
     setLoading(true);
     try {
       const data = await authService.login(email, password);
@@ -27,8 +31,25 @@ export default function LoginPage() {
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);
+      // The backend returns a 403 with "verify your email" when isVerified is false.
+      if (/verify your email/i.test(err.message)) {
+        setUnverified(true);
+      }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const resend = async () => {
+    setResending(true);
+    setResendDone(false);
+    try {
+      await authService.resendVerification(email);
+      setResendDone(true);
+    } catch {
+      setResendDone(true);
+    } finally {
+      setResending(false);
     }
   };
 
@@ -64,7 +85,24 @@ export default function LoginPage() {
                 <input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="input pl-10" />
               </div>
             </div>
-            {error && <p className="rounded-lg bg-danger-500/10 px-3 py-2 text-sm text-danger-600 dark:text-danger-400">{error}</p>}
+            {error && (
+              <div className={`rounded-lg px-3 py-2 text-sm ${unverified ? 'bg-warning-500/10 text-warning-600 dark:text-warning-400' : 'bg-danger-500/10 text-danger-600 dark:text-danger-400'}`}>
+                {unverified && <MailWarning className="mb-1 h-4 w-4" />}
+                <p>{error}</p>
+                {unverified && (
+                  <div className="mt-2 border-t border-warning-500/20 pt-2">
+                    {resendDone ? (
+                      <p className="text-xs">A new link has been sent if an account exists. Check your inbox.</p>
+                    ) : (
+                      <button type="button" onClick={resend} disabled={resending} className="flex items-center gap-1.5 text-xs font-medium text-warning-600 hover:underline disabled:opacity-50 dark:text-warning-400">
+                        {resending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+                        Resend verification email
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
             <button type="submit" disabled={loading} className="btn-primary w-full">
               {loading ? <Spinner /> : <>Sign in <ArrowRight className="h-4 w-4" /></>}
             </button>
