@@ -110,6 +110,7 @@ https://aimodel-battle-backend.onrender.com
 - User Login
 - Protected routes
 - Profile management
+- Email verification using Gmail API and OAuth 2.0
 - Change password
 - Secure logout
 
